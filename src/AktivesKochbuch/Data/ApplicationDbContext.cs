@@ -1,3 +1,4 @@
+using AktivesKochbuch.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AktivesKochbuch.Data;
@@ -8,4 +9,7 @@ public class ApplicationDbContext : DbContext
     {
         
     }
+    
+    public DbSet<Rezept> Rezepte { get; set; }
+    public DbSet<Vorschlag> Vorschläge { get; set; }
 }
