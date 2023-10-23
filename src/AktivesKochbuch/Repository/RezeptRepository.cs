@@ -1,6 +1,7 @@
 using AktivesKochbuch.Data;
 using AktivesKochbuch.Interfaces;
 using AktivesKochbuch.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AktivesKochbuch.Repository;
 
@@ -12,33 +13,37 @@ public class RezeptRepository : IRezeptRepository
     {
         _context = context;
     }
-    public Task<IEnumerable<Rezept>> GetAll()
+    public async Task<IEnumerable<Rezept>> GetAll()
     {
-        throw new NotImplementedException();
+        return await _context.Rezepte.ToListAsync();
     }
 
-    public Task<Rezept> GetByIdAsync(int id)
+    public async Task<Rezept> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return await _context.Rezepte.FirstOrDefaultAsync(i => i.Id == id);
     }
 
     public bool Add(Rezept rezept)
     {
-        throw new NotImplementedException();
+        _context.Add(rezept);
+        return Save();
     }
 
     public bool Update(Rezept rezept)
     {
-        throw new NotImplementedException();
+        _context.Update(rezept);
+        return Save();
     }
 
     public bool Delete(Rezept rezept)
     {
-        throw new NotImplementedException();
+        _context.Remove(rezept);
+        return Save();
     }
 
     public bool Save()
     {
-        throw new NotImplementedException();
+        var saved = _context.SaveChanges();
+        return saved > 0 ? true : false;
     }
 }
