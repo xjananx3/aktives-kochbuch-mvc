@@ -66,7 +66,7 @@ public class Seed
         {
             var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
             
-            var rezepte = context.Rezepte.Where(r => r.Bild == null).ToList();
+            var rezepte = context.Rezepte.ToList();
 
             foreach (var rezept in rezepte)
             {
