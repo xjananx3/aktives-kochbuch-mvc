@@ -1,10 +1,13 @@
 using AktivesKochbuch.Data;
+using AktivesKochbuch.Interfaces;
+using AktivesKochbuch.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IRezeptRepository, RezeptRepository>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
