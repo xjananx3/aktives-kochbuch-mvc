@@ -17,4 +17,10 @@ public class RezeptController : Controller
         var rezepte = _context.Rezepte.ToList();
         return View(rezepte);
     }
+
+    public IActionResult Detail(int id)
+    {
+        var rezept = _context.Rezepte.FirstOrDefault(r => r.Id == id);
+        return View(rezept);
+    }
 }
