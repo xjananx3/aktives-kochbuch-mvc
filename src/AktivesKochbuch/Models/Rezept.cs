@@ -11,6 +11,7 @@ public class Rezept
     public string RezeptTitel { get; set; }
     public string Zubereitung { get; set; }
     public RezeptKategorie RezeptKategorie { get; set; }
+    public string? Bild { get; set; }
     [ForeignKey("Benutzer")]
     public int? BenutzerId { get; set; }
     public Benutzer? Benutzer { get; set; }
