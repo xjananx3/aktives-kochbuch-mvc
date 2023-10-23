@@ -1,0 +1,30 @@
+@using AktivesKochbuch.Data.Enum
+@model Rezept
+
+@{
+}
+
+<form>
+  <div class="form-group">
+    <label asp-for="RezeptTitel">Rezepttitel</label>
+    <input asp-for="RezeptTitel" class="form-control" placeholder="RezeptTitel">
+    <span asp-validation-for="RezeptTitel" class="text-danger"></span>
+  </div>
+  <div class="form-group">
+    <label asp-for="Zubereitung">Zubereitung</label>
+    <input asp-for="Zubereitung" class="form-control" placeholder="Zubereitung">
+    <span asp-validation-for="Zubereitung" class="text-danger"></span>
+  </div>
+  <div class="form-group">
+    <label asp-for="Bild">Bild</label>
+    <input asp-for="Bild" class="form-control" placeholder="Bild">
+    <span asp-validation-for="Bild" class="text-danger"></span>
+  </div>
+  <div class="form-group">
+    <label asp-for="RezeptKategorie">RezeptKategorie</label>
+    <input asp-for="RezeptKategorie" asp-items="@Html.GetEnumSelectList<RezeptKategorie>()" class="form-control">
+      <option>--Auswählen--</option>
+    <span asp-validation-for="RezeptKategorie" class="text-danger"></span>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
