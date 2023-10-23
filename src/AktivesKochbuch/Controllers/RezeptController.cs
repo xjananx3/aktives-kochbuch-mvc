@@ -8,7 +8,7 @@ public class RezeptController : Controller
 {
     private readonly IRezeptRepository _rezeptRepository;
 
-    public RezeptController(ApplicationDbContext context, IRezeptRepository rezeptRepository)
+    public RezeptController(IRezeptRepository rezeptRepository)
     {
         _rezeptRepository = rezeptRepository;
     }
@@ -24,4 +24,10 @@ public class RezeptController : Controller
         var rezept = await _rezeptRepository.GetByIdAsync(id);
         return View(rezept);
     }
+
+    public IActionResult Create()
+    {
+        return View();
+    }
+    
 }
