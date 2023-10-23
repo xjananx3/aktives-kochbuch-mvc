@@ -1,26 +1,27 @@
 using AktivesKochbuch.Data;
+using AktivesKochbuch.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AktivesKochbuch.Controllers;
 
 public class RezeptController : Controller
 {
-    private readonly ApplicationDbContext _context;
-    
-    public RezeptController(ApplicationDbContext context)
+    private readonly IRezeptRepository _rezeptRepository;
+
+    public RezeptController(ApplicationDbContext context, IRezeptRepository rezeptRepository)
     {
-        _context = context;
+        _rezeptRepository = rezeptRepository;
     }
     
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        var rezepte = _context.Rezepte.ToList();
+        var rezepte = await _rezeptRepository.GetAll();
         return View(rezepte);
     }
 
-    public IActionResult Detail(int id)
+    public async Task<IActionResult> Detail(int id)
     {
-        var rezept = _context.Rezepte.FirstOrDefault(r => r.Id == id);
+        var rezept = await _rezeptRepository.GetByIdAsync(id);
         return View(rezept);
     }
 }
