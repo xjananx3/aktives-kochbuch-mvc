@@ -4,6 +4,8 @@
 @{
 }
 
+<h1>Erstelle ein hier ein neues Rezept</h1>
+
 <form>
   <div class="form-group">
     <label asp-for="RezeptTitel">Rezepttitel</label>
@@ -22,9 +24,10 @@
   </div>
   <div class="form-group">
     <label asp-for="RezeptKategorie">RezeptKategorie</label>
-    <input asp-for="RezeptKategorie" asp-items="@Html.GetEnumSelectList<RezeptKategorie>()" class="form-control">
-      <option>--Auswählen--</option>
+    <select asp-for="RezeptKategorie" asp-items="@Html.GetEnumSelectList<RezeptKategorie>()" class="form-control">
+        <option>--Auswählen--</option>
+    </select>
     <span asp-validation-for="RezeptKategorie" class="text-danger"></span>
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" class="btn btn-primary">Bestätigen</button>
 </form>
