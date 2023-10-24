@@ -3,6 +3,7 @@ using AktivesKochbuch.Interfaces;
 using AktivesKochbuch.Models;
 using AktivesKochbuch.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace AktivesKochbuch.Controllers;
 
@@ -58,5 +59,47 @@ public class RezeptController : Controller
 
         return View(rezeptVm);
     }
-    
+
+    public async Task<IActionResult> Edit(int id)
+    {
+        var rezept = await _rezeptRepository.GetByIdAsync(id);
+        if (rezept == null) 
+            return View("Error");
+
+        var rezeptVm = new EditRezeptViewModel
+        {
+            RezeptTitel = rezept.RezeptTitel,
+            Zubereitung = rezept.Zubereitung,
+            Url = rezept.Bild,
+            RezeptKategorie = rezept.RezeptKategorie
+        };
+
+        return View(rezeptVm);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Edit(int id, EditRezeptViewModel rezeptVm)
+    {
+        if (!ModelState.IsValid)
+        {
+            ModelState.AddModelError("", "Bearbeiten des Rezepts fehlgeschlagen");
+            return View("Edit", rezeptVm);
+        }
+
+        var photoResult = await _photoService.AddPhotoAsync(rezeptVm.Bild);
+
+        var rezept = new Rezept
+        {
+            Id = id,
+            RezeptTitel = rezeptVm.RezeptTitel,
+            Zubereitung = rezeptVm.Zubereitung,
+            Bild = photoResult.Url.ToString(),
+            RezeptKategorie = rezeptVm.RezeptKategorie
+        };
+        _rezeptRepository.Update(rezept);
+        
+        return RedirectToAction("Index");
+    }
+
 }
+    
