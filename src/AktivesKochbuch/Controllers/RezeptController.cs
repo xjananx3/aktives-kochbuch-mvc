@@ -1,6 +1,7 @@
 using AktivesKochbuch.Data;
 using AktivesKochbuch.Interfaces;
 using AktivesKochbuch.Models;
+using AktivesKochbuch.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AktivesKochbuch.Controllers;
@@ -8,10 +9,12 @@ namespace AktivesKochbuch.Controllers;
 public class RezeptController : Controller
 {
     private readonly IRezeptRepository _rezeptRepository;
+    private readonly IPhotoService _photoService;
 
-    public RezeptController(IRezeptRepository rezeptRepository)
+    public RezeptController(IRezeptRepository rezeptRepository, IPhotoService photoService)
     {
         _rezeptRepository = rezeptRepository;
+        _photoService = photoService;
     }
     
     public async Task<IActionResult> Index()
@@ -32,14 +35,28 @@ public class RezeptController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(Rezept rezept)
+    public async Task<IActionResult> Create(CreateRezeptViewModel rezeptVm)
     {
-        if (!ModelState.IsValid)
+        if (ModelState.IsValid)
         {
-            return View(rezept);
+            var result = await _photoService.AddPhotoAsync(rezeptVm.Bild);
+
+            var rezept = new Rezept
+            {
+                RezeptTitel = rezeptVm.RezeptTitel,
+                Zubereitung = rezeptVm.Zubereitung,
+                RezeptKategorie = rezeptVm.RezeptKategorie,
+                Bild = result.Url.ToString()
+            };
+            _rezeptRepository.Add(rezept);
+            return RedirectToAction("Index");
         }
-        _rezeptRepository.Add(rezept);
-        return RedirectToAction("Index");
+        else
+        {
+            ModelState.AddModelError("", "Der Photouplod ist leider fehlgeschlagen");
+        }
+
+        return View(rezeptVm);
     }
     
 }
