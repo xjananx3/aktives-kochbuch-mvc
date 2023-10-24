@@ -1,5 +1,6 @@
 using AktivesKochbuch.Data;
 using AktivesKochbuch.Interfaces;
+using AktivesKochbuch.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AktivesKochbuch.Controllers;
@@ -28,6 +29,17 @@ public class RezeptController : Controller
     public IActionResult Create()
     {
         return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(Rezept rezept)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(rezept);
+        }
+        _rezeptRepository.Add(rezept);
+        return RedirectToAction("Index");
     }
     
 }
